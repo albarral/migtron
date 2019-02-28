@@ -15,8 +15,11 @@ public class TronTest {
      */
     public static void main(String[] args) 
     {
-        TestTronMath testTronMath = new TestTronMath();
-        testTronMath.makeTest();
+//        TestTronMath testTronMath = new TestTronMath();
+//        testTronMath.makeTest();
+
+        TestTronDisplay testTronDisplay = new TestTronDisplay();
+        testTronDisplay.makeTest();
     }
     
 }

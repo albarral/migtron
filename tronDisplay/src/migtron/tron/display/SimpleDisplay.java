@@ -9,8 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import java.io.File;
-
+import migtron.tron.utils.Files;
 
 /**
  * Utility class to show an image in a display
@@ -33,7 +32,7 @@ public class SimpleDisplay
     {                
         try 
         {
-            if (checkPathExists(imagePath))
+            if (Files.checkPathExists(imagePath))
             {
                 System.out.println("SimpleDisplay: showing image " + imagePath);
                 displayLabel(new ImageIcon(imagePath));
@@ -74,16 +73,5 @@ public class SimpleDisplay
         // otherwise, just update the label
         else
             label.setIcon(icon);
-    }
-
-    private boolean checkPathExists(String path)
-    {
-        boolean bvalid = false;
-        if (!path.isEmpty())
-        {
-            File file = new File(path);
-            bvalid = (file.exists());
-        }
-        return bvalid;
     }
 }

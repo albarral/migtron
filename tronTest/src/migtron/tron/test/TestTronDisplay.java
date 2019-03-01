@@ -30,8 +30,8 @@ public class TestTronDisplay
         System.out.println(modName  + ": test start");
         //testSimpleDisplay1();
         //testSimpleDisplay2();
-        //testDisplay1();
-        testDisplay2();
+        testDisplay1();
+        //testDisplay2();
         System.out.println(modName  + ": test end");
     }
 

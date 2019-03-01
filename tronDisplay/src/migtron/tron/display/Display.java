@@ -6,13 +6,14 @@ package migtron.tron.display;
 
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import migtron.tron.utils.Files;
 
 /**
  * Utility class to show multiple images in a display
@@ -93,7 +94,7 @@ public class Display
     
     private ImageIcon createIcon(String imagePath)
     {
-        if (checkPathExists(imagePath))
+        if (Files.checkPathExists(imagePath))
             return new ImageIcon(imagePath);
         else
             return null;        
@@ -105,22 +106,5 @@ public class Display
             return new ImageIcon(image);
         else
             return null;        
-    }
-    
-    private boolean checkPathExists(String path)
-    {
-        boolean bvalid = false;
-        if (!path.isEmpty())
-        {
-            File file = new File(path);
-            bvalid = (file.exists());
-        }
-
-        if (!bvalid)
-        {
-            System.out.println("Display: path not exists " + path);                                       
-        }
-        return bvalid;
-    }
-    
+    }       
 }

@@ -4,7 +4,7 @@
  */
 package migtron.tron.display;
 
-//import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,28 +36,46 @@ public class SimpleDisplay
             if (checkPathExists(imagePath))
             {
                 System.out.println("SimpleDisplay: showing image " + imagePath);
-                // if first image, create label and add it to frame
-                if (label == null)
-                {
-                    label = new JLabel(new ImageIcon(imagePath));
-                    frame.getContentPane().add(label);
-                    frame.pack();
-                    frame.setVisible(true);                    
-                }
-                // otherwise, just update the label
-                else
-                {
-                    label.setIcon(new ImageIcon(imagePath));
-                    //frame.repaint();  // frame is not resized
-                }
+                displayLabel(new ImageIcon(imagePath));
             }
+            else
+                System.out.println("SimpleDisplay: can't show image, path not exists " + imagePath);                                       
         } 
         catch (Exception e) 
         {
           e.printStackTrace();
         }            
+    }    
+        
+    // show buffered image 
+    public void showImage(BufferedImage image)
+    {                
+        try 
+        {
+            displayLabel(new ImageIcon(image));
+        } 
+        catch (Exception e) 
+        {
+          e.printStackTrace();
+        }            
+    }    
+
+    // create or update label with given image icon
+    private void displayLabel(ImageIcon icon)
+    {                
+        // if first image, create label and add it to frame
+        if (label == null)
+        {
+            label = new JLabel(icon);
+            frame.getContentPane().add(label);
+            frame.pack();
+            frame.setVisible(true);                    
+        }
+        // otherwise, just update the label
+        else
+            label.setIcon(icon);
     }
-    
+
     private boolean checkPathExists(String path)
     {
         boolean bvalid = false;
@@ -65,11 +83,6 @@ public class SimpleDisplay
         {
             File file = new File(path);
             bvalid = (file.exists());
-        }
-
-        if (!bvalid)
-        {
-            System.out.println("SimpleDisplay: path not exists " + path);                                       
         }
         return bvalid;
     }

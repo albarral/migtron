@@ -20,68 +20,81 @@ import javax.swing.JLabel;
  */
 public class Display
 {
-//    private static final int MAX_WINDOWS = 4; // max number of windows allowed in the display
-//    private static final int NUM_COLUMNS = 2; // predefined number of columns
-
-//    private int width;  // display width
-//    private int height;  // display height
     private JFrame frame;       // display frame
     private List<JLabel> listWindows;   // list of display windows (JLabels)
     
     public Display(String title)
     {
-//        this.width = width;
-//        this.height = height;
-        
         frame = new JFrame(title);        
-//        frame.setSize(width, height);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new FlowLayout(FlowLayout.LEFT));        
         listWindows = new ArrayList<>();
     }
     
-    // add new window with given image (from path)
+    // add new window to display with image from path
     public void addWindow(String imagePath)
     {      
         // create icon
         ImageIcon icon = createIcon(imagePath);
+        addWindow(icon);
+    }    
+    
+    // add new window to display with buffered image
+    public void addWindow(BufferedImage image)
+    {      
+        // create icon
+        ImageIcon icon = createIcon(image);
+        addWindow(icon);
+    }    
+
+    // update existing display window with image from path
+    public void updateWindow(int position, String imagePath)
+    {                
+        // create icon        
+        ImageIcon icon = createIcon(imagePath);
+        updateWindow(position, icon);
+    }
+    
+    // update existing display window with buffered image
+    public void updateWindow(int position, BufferedImage image)
+    {                
+        // create icon        
+        ImageIcon icon = createIcon(image);
+        updateWindow(position, icon);
+    }
+    
+    // adds a new window to the display showing an image icon
+    private void addWindow(ImageIcon icon)
+    {      
         // create label and add it to frame
         if (icon != null)
         {
             JLabel label = new JLabel(icon);
             listWindows.add(label);            
             frame.getContentPane().add(label);            
+            // show the frame
+            frame.pack();
+            frame.setVisible(true);                                    
         }
-        // show the frame
-        frame.pack();
-        frame.setVisible(true);                                    
     }    
     
-    // show image located in given path in specified window
-    public void updateWindow(int position, String imagePath)
+    // update existing display window with an image icon
+    private void updateWindow(int position, ImageIcon icon)
     {                
         if (position < listWindows.size())
         {            
-            // create icon        
-            ImageIcon icon = createIcon(imagePath);
             // update label
             if (icon != null)
-            {
                 listWindows.get(position).setIcon(icon);
-            }
         }
         else
-        {
             System.out.println("Display: updateWindow() failed, window not exists " + position);                                                   
-        }
     }
-
+    
     private ImageIcon createIcon(String imagePath)
     {
         if (checkPathExists(imagePath))
-        {
             return new ImageIcon(imagePath);
-        }
         else
             return null;        
     }
@@ -89,9 +102,7 @@ public class Display
     private ImageIcon createIcon(BufferedImage image)
     {
         if (image != null)
-        {
             return new ImageIcon(image);
-        }
         else
             return null;        
     }

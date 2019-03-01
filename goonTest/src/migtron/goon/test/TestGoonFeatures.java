@@ -4,20 +4,9 @@
  */
 package migtron.goon.test;
 
-import java.awt.Point;
-
 import migtron.goon.features.Blob;
-import migtron.goon.features.Body;
-import migtron.tron.cv.Display;
-import migtron.tron.cv.DisplayWindow;
-import migtron.tron.cv.Window;
-
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-//import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
+//import migtron.goon.features.Body;
+//import migtron.tron.cv.Window;
 
 
 /**
@@ -37,8 +26,7 @@ public class TestGoonFeatures
     public void makeTest()
     {
         System.out.println(modName  + ": test start");
-        //testBlob();
-        testBodies();
+        testBlob();
         System.out.println(modName  + ": test end");
     }
 
@@ -50,27 +38,40 @@ public class TestGoonFeatures
         System.out.println(blob.toString());
     }
 
-    private void testBodies()
-    {
-        System.out.println(modName  + ".testBodies() ...");
-        int imgW = 200;
-        int imgH = 100;
-
-        MaskDrawing maskDrawing = new MaskDrawing(imgW, imgH);
-        maskDrawing.fillSector(1);
-        Mat mat1 = maskDrawing.getMask().clone();
-        maskDrawing.fillSector(2);
-        Mat mat2 = maskDrawing.getMask().clone();
-        maskDrawing.fillSector(3);
-        Mat mat3 = maskDrawing.getMask().clone();
-        maskDrawing.fillSector(4);
-        Mat mat4 = maskDrawing.getMask().clone();
-                
-        Display.showWindow("mat1", mat1);
-        Display.showWindow("mat2", mat2);
-        Display.showWindow("mat3", mat3);
-        Display.showWindow("mat4", mat4);
-    }
+//    private void testBodies()
+//    {
+//        System.out.println(modName  + ".testBodies() ...");
+//        int imgW = 200;
+//        int imgH = 100;
+//
+//        MaskDrawing maskDrawing = new MaskDrawing(imgW, imgH);
+//        maskDrawing.fillTop();
+//        
+//        
+//        BufferedImage image1 = ImageUtils.maskCV2Java(maskDrawing.getMask());
+//
+//        maskDrawing.clear();
+//        maskDrawing.fillLeft();
+//        
+//        
+//        BufferedImage image2 = ImageUtils.maskCV2Java(maskDrawing.getMask());
+//
+//        maskDrawing.clear();
+//        maskDrawing.fillBottomLeft();
+//        BufferedImage image3 = ImageUtils.maskCV2Java(maskDrawing.getMask());
+//
+//        maskDrawing.clear();
+//        maskDrawing.fillBottomRight();
+//        BufferedImage image4 = ImageUtils.maskCV2Java(maskDrawing.getMask());
+//                
+//        // show two images at the same time
+//        Display display = new Display("display");
+//        display.addWindow(image1);
+//        display.addWindow(image2);
+//        display.addWindow(image3);
+//        display.addWindow(image4);
+//    }
+    
 //    private void testBodies() 
 //    {        
 //        System.out.println(modName  + ".testBodies() ...");

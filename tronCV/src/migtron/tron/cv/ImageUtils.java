@@ -18,10 +18,10 @@ import org.opencv.highgui.Highgui;
  * Utility class to convert OpenCV images to java
  * @author albarral
  */
-public class Image
+public class ImageUtils
 {
     // transform opencv mask to java image
-    public static BufferedImage convertMask(Mat mat)
+    public static BufferedImage maskCV2Java(Mat mat)
     {                
         if (mat.type() == CvType.CV_8UC1)
         {
@@ -44,7 +44,7 @@ public class Image
         }
         else
         {
-            System.out.println("tron.cv.Image: convertMask() failed. Input mat is not a mask");                 
+            System.out.println("ImageUtils: cvMask2javaImage() failed. Input mat is not a mask");                 
             return null;
         }
     }

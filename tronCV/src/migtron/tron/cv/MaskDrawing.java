@@ -2,7 +2,7 @@
  *  Copyright (C) 2019 by Migtron Robotics   
  *  albarral@migtron.com
  */
-package migtron.goon.test;
+package migtron.tron.cv;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -45,8 +45,57 @@ public class MaskDrawing
     }
         
     public Mat getMask() {return mat;};
+
+    public void fillTop()
+    {
+        fillSector(1);
+        fillSector(2);
+    }
+
+    public void fillBottom()
+    {
+        fillSector(3);
+        fillSector(4);
+    }
+
+    public void fillLeft()
+    {
+        fillSector(1);
+        fillSector(3);
+    }
+
+    public void fillRight()
+    {
+        fillSector(2);
+        fillSector(4);
+    }
     
-    public boolean fillSector(int sector)
+    public void fillTopLeft()
+    {
+        fillSector(1);
+    }
+
+    public void fillTopRight()
+    {
+        fillSector(2);
+    }
+
+    public void fillBottomLeft()
+    {
+        fillSector(3);
+    }
+
+    public void fillBottomRight()
+    {
+        fillSector(4);
+    }
+    
+    public void clear()
+    {
+        mat.setTo(new Scalar(0));
+    }
+    
+    private boolean fillSector(int sector)
     {
         Rect window = null;
         switch (sector)

@@ -34,7 +34,12 @@ public class Mask implements Cloneable
         this.window = null;
         set(mat, window);
     }    
-        
+
+    public Mask(Mat mat)
+    {
+        this(mat, new Rect(0, 0, mat.width(), mat.height()));
+    }    
+    
     public Mask(Mask mask)
     {
         this(mask.mat, mask.window);

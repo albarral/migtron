@@ -60,7 +60,7 @@ public class Mask implements Cloneable
     }
 
     public boolean isValid() {return (mat != null);}
-    public Mat getMask() {return mat;}             
+    public Mat getMat() {return mat;}             
     public Rect getWindow() {return window;};
     
     // set mask matrix and window 

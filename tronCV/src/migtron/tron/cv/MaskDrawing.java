@@ -4,7 +4,6 @@
  */
 package migtron.tron.cv;
 
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
@@ -44,7 +43,7 @@ public class MaskDrawing
         this(200, 100);
     }
         
-    public Mat getMask() {return mat;};
+    public Mat getMat() {return mat;};
 
     public void fillTop()
     {
@@ -115,8 +114,7 @@ public class MaskDrawing
         }
         if (window != null)
         {
-            Scalar white = new Scalar(255);  // white
-            Core.rectangle(mat, window.tl(), window.br(), white, Core.FILLED);
+            ImageUtils.drawFilledRectangle(mat, window, ImageUtils.eColor.eCOLOR_WHITE);
             return true;
         }
         else

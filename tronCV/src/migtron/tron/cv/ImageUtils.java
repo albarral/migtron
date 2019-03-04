@@ -9,10 +9,18 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
 
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.RotatedRect;
+import org.opencv.core.Size;
+import org.opencv.core.Scalar;
 import org.opencv.highgui.Highgui;
+
+import migtron.tron.math.Ellipse;
 
 /**
  * Utility class to convert OpenCV images to java
@@ -20,8 +28,14 @@ import org.opencv.highgui.Highgui;
  */
 public class ImageUtils
 {
-    // transform opencv mask to java image
-    public static BufferedImage maskCV2Java(Mat mat)
+    public enum eColor{
+        eCOLOR_BLACK, 
+        eCOLOR_WHITE,
+        eCOLOR_GREY      
+    }
+    
+    // convert opencv mask to java image
+    public static BufferedImage cvMask2Java(Mat mat)
     {                
         if (mat.type() == CvType.CV_8UC1)
         {
@@ -49,4 +63,71 @@ public class ImageUtils
         }
     }
     
+    // draw an ellipse (perimeter only)
+    public static void drawEllipse(Mat mat, int x, int y, int w, int h, float angle, eColor color)
+    {
+        RotatedRect rotWindow = new RotatedRect(new Point(x, y), new Size(w, h), angle);
+        Core.ellipse(mat, rotWindow, getColor(color));                        
+    }
+
+    // draw a filled ellipse (whole surface)
+    public static void drawFilledEllipse(Mat mat, int x, int y, int w, int h, float angle, eColor color)
+    {
+        RotatedRect rotWindow = new RotatedRect(new Point(x, y), new Size(w, h), angle);
+        Core.ellipse(mat, rotWindow, getColor(color), Core.FILLED);                        
+    }
+
+    // draw an ellipse (perimeter only)
+    public static void drawEllipse(Mat mat, Ellipse ellipse, eColor color)
+    {
+        Core.ellipse(mat, ellipse2RotatedRect(ellipse), getColor(color));                        
+    }
+
+    // draw a filled ellipse (whole surface)
+    public static void drawFilledEllipse(Mat mat, Ellipse ellipse, eColor color)
+    {
+        Core.ellipse(mat, ellipse2RotatedRect(ellipse), getColor(color), Core.FILLED);                        
+    }
+    
+    // draw a rectangle (perimeter only)
+    public static void drawRectangle(Mat mat, Rect window, eColor color)
+    {
+        Core.rectangle(mat, window.tl(), window.br(), getColor(color));        
+    }
+
+    // draw a filled rectangle (whole surface)
+    public static void drawFilledRectangle(Mat mat, Rect window, eColor color)
+    {
+        Core.rectangle(mat, window.tl(), window.br(), getColor(color), Core.FILLED);        
+    }
+
+    // convert tron ellipse to opencv rotated window
+    public static RotatedRect ellipse2RotatedRect(Ellipse ellipse)
+    {
+        return new RotatedRect(new Point(ellipse.getPosition().x, ellipse.getPosition().y), new Size(ellipse.getWidth(), ellipse.getHeight()), ellipse.getAngle());
+    }
+
+    // convert color enum to opencv color
+    private static Scalar getColor(eColor ecolor)
+    {
+        Scalar color; 
+        switch (ecolor)
+        {
+            case eCOLOR_BLACK:
+                color = new Scalar(0); 
+                break;
+
+            case eCOLOR_WHITE:
+                color = new Scalar(255); 
+                break;
+                
+            case eCOLOR_GREY:
+                color = new Scalar(128); 
+                break;
+                
+            default: 
+                color = new Scalar(0); // default is black
+        }
+        return color;        
+    }
 }

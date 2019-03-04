@@ -96,7 +96,7 @@ public class Ellipse implements Cloneable
         else
             height = 0.0f;
 
-        float radians = (float)Math.atan2(-b, a);   // sign of y changed because mask Y axis faces down
+        float radians = (float)Math.atan2(b, a);   // sign of y changed because mask Y axis faces down
         angle = (float)Math.toDegrees(radians);       
     }
         
@@ -149,7 +149,9 @@ public class Ellipse implements Cloneable
     @Override
     public String toString()
     {
-        String desc = "Ellipse [pos = (" + String.valueOf(pos.x) + "," + String.valueOf(pos.y) + "), covs = " + covs.toString() + "]";
+        String desc = "Ellipse [pos = (" + String.valueOf(pos.x) + "," + String.valueOf(pos.y) + ")" +         
+                " (width, height, angle) = (" + String.valueOf((int)width) + "," + String.valueOf((int)height) + "," + String.valueOf(angle) + ")" +
+                " covs = " + covs.toString() + "]";
         return desc;
     }    
 }

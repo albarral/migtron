@@ -37,33 +37,72 @@ public class TestTronCV
         OpenCV.activate();
 
         System.out.println(modName  + ": test start");
-        testMask();
+        //testMask();
+        testMask2();
 //        testMaskDrawing();
 //        testMaskOperations();
         System.out.println(modName  + ": test end");
     }
-
+        
     private void testMask()
     {
         System.out.println(modName  + ".testMask() ...");
-        // image size
+        // create mask
         int w = 100;
         int h = 100;
-        // ellipse 
+        Mat mat = Mat.zeros(h, w, CvType.CV_8UC1);
+
+        // draw ellipse
         int w2 = 100;
         int h2 = 50;
         float angle = 30.0f;
-        // create mask with ellipse
-        Mat mat = Mat.zeros(h, w, CvType.CV_8UC1);
         ImageUtils.drawFilledEllipse(mat, 50, 50, w2, h2, angle, ImageUtils.eColor.eCOLOR_WHITE);
-
+        
+        // compute ellipse
         Mask mask = new Mask(mat);
         Mask mask2 = computeAndDrawEllipse(mask);
         
-        Display display = new Display("original");
-        display.addWindow(ImageUtils.cvMask2Java(mat));            
-        Display display2 = new Display("computed");
-        display2.addWindow(ImageUtils.cvMask2Java(mask2.getMat()));            
+        // show both
+        Display display = new Display("computed");
+        display.addWindow(ImageUtils.cvMask2Java(mask2.getMat()));            
+    }
+
+    private void testMask2()
+    {
+        System.out.println(modName  + ".testMask2) ...");
+        // create mask
+        int w = 400;
+        int h = 400;
+        Mat mat1 = Mat.zeros(h, w, CvType.CV_8UC1);
+        Mat mat2 = mat1.clone();
+        Mat mat3 = mat1.clone();
+        Mat mat4 = mat1.clone();
+
+        // draw lines
+        int ymid = h/2;
+        int xmid = w/2;
+        float length = (float)w/2;
+        float horizontal = 0.0f;
+        float vertical = 90.0f;
+        // horizontal
+        ImageUtils.drawLine(mat1, 0, ymid, length, horizontal, ImageUtils.eColor.eCOLOR_WHITE);
+        ImageUtils.drawLine(mat2, xmid, ymid, length, horizontal, ImageUtils.eColor.eCOLOR_WHITE);
+        // vertical 
+        ImageUtils.drawLine(mat3, xmid, 0, length, vertical, ImageUtils.eColor.eCOLOR_WHITE);
+        ImageUtils.drawLine(mat4, xmid, ymid, length, vertical, ImageUtils.eColor.eCOLOR_WHITE);
+
+        // create list for masks
+        List<Mask> listMasks = new ArrayList<>();
+        listMasks.add(new Mask(mat1));
+        listMasks.add(new Mask(mat2));
+        listMasks.add(new Mask(mat3));
+        listMasks.add(new Mask(mat4));
+        
+        // process masks (compute ellipses)
+        List<Mask> listMasks2 = processMasks(listMasks);
+        
+        // show masks (original and processed)
+        showMasks(listMasks2, "processed");
     }
 
     private void testMaskDrawing()

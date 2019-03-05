@@ -19,7 +19,7 @@ public class TronTest {
         testTronCV.makeTest();
 
         TestTronMath testTronMath = new TestTronMath();
-//        testTronMath.makeTest();
+        //testTronMath.makeTest();
 
         TestTronDisplay testTronDisplay = new TestTronDisplay();
         //testTronDisplay.makeTest();                

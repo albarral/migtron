@@ -4,9 +4,12 @@
  */
 package migtron.tron.cv;
 
+import java.awt.geom.Point2D.Float;
 import java.awt.image.BufferedImage;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+
 import javax.imageio.ImageIO;
 
 import org.opencv.core.Core;
@@ -21,6 +24,7 @@ import org.opencv.core.Scalar;
 import org.opencv.highgui.Highgui;
 
 import migtron.tron.math.Ellipse;
+import migtron.tron.math.Coordinates;
 
 /**
  * Utility class to convert OpenCV images to java
@@ -61,6 +65,14 @@ public class ImageUtils
             System.out.println("ImageUtils: cvMask2javaImage() failed. Input mat is not a mask");                 
             return null;
         }
+    }
+
+    // draw a line (from origin, with length and angle)
+    public static void drawLine(Mat mat, int x, int y, float length, float angle, eColor color)
+    {
+        // get vector to second point
+        Float vector = Coordinates.computeCartesian(length, angle);
+        Core.line(mat, new Point(x, y), new Point(x+vector.x, y+vector.y), getColor(color));                        
     }
     
     // draw an ellipse (perimeter only)

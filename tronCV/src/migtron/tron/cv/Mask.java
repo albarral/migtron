@@ -5,6 +5,7 @@
 package migtron.tron.cv;
 
 
+import java.awt.geom.Point2D.Float;
 import java.awt.Point;
 import migtron.tron.math.Ellipse;
 import migtron.tron.math.Vec3f;
@@ -142,7 +143,7 @@ public class Mask implements Cloneable
         if (m00 != 0)
         {
             // compute centroid and covariances from obtained moments
-            return new Ellipse(new Point((int)xo+window.x, (int)yo+window.y),
+            return new Ellipse(new Float(xo+window.x, yo+window.y),
                     new Vec3f((float)(mu20/m00), (float)(mu02/m00), (float)(mu11/m00)));
         }
         // if empty mask, null size ellipse returned

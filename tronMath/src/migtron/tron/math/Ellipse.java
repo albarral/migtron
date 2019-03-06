@@ -4,6 +4,7 @@
  */
 package migtron.tron.math;
 
+import java.awt.geom.Point2D.Float;
 import java.awt.Point;
 
 /**
@@ -15,16 +16,16 @@ import java.awt.Point;
 
 public class Ellipse implements Cloneable
 {
-    protected Point pos;               // centroid (x,y)
+    protected Float pos;               // centroid (x,y)
     protected Vec3f covs;             // cxx, cyy, cxy	
     // main axes (automatically computed)
-    protected float width;            // main axis size
-    protected float height;           // secondary axis size
+    protected float width;            // main axis radial size
+    protected float height;           // secondary axis radial size
     protected float angle;            // angle of main axis (degrees, counter clockwise direction, [-90, 90])
     
-    public Ellipse(Point pos, Vec3f covs)
+    public Ellipse(Float pos, Vec3f covs)
     {
-        this.pos = new Point(pos);
+        this.pos = new Float(pos.x, pos.y);
         this.covs = new Vec3f(covs);
         // on every covariance change, the main axes are recomputed
         updateMainAxes();
@@ -32,26 +33,26 @@ public class Ellipse implements Cloneable
 
     public Ellipse()
     {
-        this(new Point(0, 0), new Vec3f(0, 0, 0));
+        this(new Float(0, 0), new Vec3f(0, 0, 0));
     }
     
     public Ellipse(Ellipse ellipse)
     {
-        this(ellipse.getPosition(), ellipse.getCovariances());
+        this(ellipse.pos, ellipse.covs);
     }    
     
     @Override
     public Object clone() throws CloneNotSupportedException 
     {
         Ellipse cloned = (Ellipse)super.clone();
-        cloned.pos = (Point)pos.clone();
+        cloned.pos = (Float)pos.clone();
         cloned.covs = (Vec3f)covs.clone();
         return cloned;
     }
         
     public void copy(Ellipse ellipse)
     {
-        pos = (Point)ellipse.pos.clone();
+        pos = (Float)ellipse.pos.clone();
         try {covs = (Vec3f)ellipse.covs.clone();}            
         catch (CloneNotSupportedException e) {}
         width = ellipse.width;
@@ -59,7 +60,8 @@ public class Ellipse implements Cloneable
         angle = ellipse.angle;
     }
     
-    public Point getPosition() {return pos;};
+    public Float getPosition() {return pos;};
+    public Point getPointPosition() {return new Point(Math.round(pos.x), Math.round(pos.y));};
     public Vec3f getCovariances() {return covs;};
     public float getWidth() {return width;};
     public float getHeight() {return height;};
@@ -96,7 +98,7 @@ public class Ellipse implements Cloneable
         else
             height = 0.0f;
 
-        float radians = (float)Math.atan2(b, a);   // sign of y changed because mask Y axis faces down
+        float radians = (float)Math.atan2(-b, a)/2;   // sign of y changed because mask Y axis faces down
         angle = (float)Math.toDegrees(radians);       
     }
         
@@ -112,7 +114,7 @@ public class Ellipse implements Cloneable
     // merge given ellipse into this ellipse combining their covariances and centroids in a ponderated way (using weights) 
     public void mergeEllipse(Ellipse ellipse, float w1, float w2)
     {
-        Point pos2 = ellipse.getPosition();
+        Float pos2 = ellipse.getPosition();
         Vec3f covs2 = ellipse.getCovariances();
 
         float cx1 = covs.getX();
@@ -128,8 +130,8 @@ public class Ellipse implements Cloneable
         float dy = pos.y - pos2.y;
 
         // new position
-        pos.x = (int)(w1*pos.x + w2*pos2.x);
-        pos.y = (int)(w1*pos.y + w2*pos2.y);
+        pos.x = w1*pos.x + w2*pos2.x;
+        pos.y = w1*pos.y + w2*pos2.y;
 
         // new covariances 
         Vec3f covs = new Vec3f(w1*cx1 + w2*cx2 + w12*dx*dx,
@@ -141,7 +143,7 @@ public class Ellipse implements Cloneable
     
     public void clear()
     {
-        pos.x = pos.y = 0;
+        pos.x = pos.y = 0f;
         covs.data[0] = covs.data[1] = covs.data[2] = 0f;
         width = height = angle = 0f;
     }
@@ -150,7 +152,7 @@ public class Ellipse implements Cloneable
     public String toString()
     {
         String desc = "Ellipse [pos = (" + String.valueOf(pos.x) + "," + String.valueOf(pos.y) + ")" +         
-                " (width, height, angle) = (" + String.valueOf((int)width) + "," + String.valueOf((int)height) + "," + String.valueOf(angle) + ")" +
+                " (width, height, angle) = (" + String.valueOf(width) + "," + String.valueOf(height) + "," + String.valueOf(angle) + ")" +
                 " covs = " + covs.toString() + "]";
         return desc;
     }    

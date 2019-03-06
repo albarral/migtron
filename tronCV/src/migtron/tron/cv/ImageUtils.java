@@ -72,20 +72,23 @@ public class ImageUtils
     {
         // get vector to second point
         Float vector = Coordinates.computeCartesian(length, angle);
-        Core.line(mat, new Point(x, y), new Point(x+vector.x, y+vector.y), getColor(color));                        
+        // vector.y sign changed (as image y axis is opposite to world y axis)
+        Core.line(mat, new Point(x, y), new Point(x+vector.x, y-vector.y), getColor(color));                        
     }
     
     // draw an ellipse (perimeter only)
     public static void drawEllipse(Mat mat, int x, int y, int w, int h, float angle, eColor color)
     {
-        RotatedRect rotWindow = new RotatedRect(new Point(x, y), new Size(w, h), angle);
+        // angle sign changed (as image y axis is opposite to world y axis)
+        RotatedRect rotWindow = new RotatedRect(new Point(x, y), new Size(2*w, 2*h), -angle);
         Core.ellipse(mat, rotWindow, getColor(color));                        
     }
 
     // draw a filled ellipse (whole surface)
     public static void drawFilledEllipse(Mat mat, int x, int y, int w, int h, float angle, eColor color)
     {
-        RotatedRect rotWindow = new RotatedRect(new Point(x, y), new Size(w, h), angle);
+        // angle sign changed (as image y axis is opposite to world y axis)
+        RotatedRect rotWindow = new RotatedRect(new Point(x, y), new Size(2*w, 2*h), -angle);
         Core.ellipse(mat, rotWindow, getColor(color), Core.FILLED);                        
     }
 
@@ -116,7 +119,8 @@ public class ImageUtils
     // convert tron ellipse to opencv rotated window
     public static RotatedRect ellipse2RotatedRect(Ellipse ellipse)
     {
-        return new RotatedRect(new Point(ellipse.getPosition().x, ellipse.getPosition().y), new Size(ellipse.getWidth(), ellipse.getHeight()), ellipse.getAngle());
+        // angle sign changed (as image y axis is opposite to world y axis)
+        return new RotatedRect(new Point(ellipse.getPosition().x, ellipse.getPosition().y), new Size(2*ellipse.getWidth(), 2*ellipse.getHeight()), -ellipse.getAngle());
     }
 
     // convert color enum to opencv color

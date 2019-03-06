@@ -37,42 +37,51 @@ public class TestTronCV
         OpenCV.activate();
 
         System.out.println(modName  + ": test start");
-        //testMask();
-        testMask2();
-//        testMaskDrawing();
+        testMaskEllipse();
+//        testMaskLines();
+//        testMaskRectangles();
 //        testMaskOperations();
         System.out.println(modName  + ": test end");
     }
         
-    private void testMask()
+    private void testMaskEllipse()
     {
-        System.out.println(modName  + ".testMask() ...");
+        System.out.println(modName  + ".testMaskEllipse() ...");
         // create mask
-        int w = 100;
-        int h = 100;
-        Mat mat = Mat.zeros(h, w, CvType.CV_8UC1);
+        int w = 200;
+        int h = 200;
+        Mat mat1 = Mat.zeros(h, w, CvType.CV_8UC1);
+        Mat mat2 = mat1.clone();
 
         // draw ellipse
-        int w2 = 100;
-        int h2 = 50;
-        float angle = 30.0f;
-        ImageUtils.drawFilledEllipse(mat, 50, 50, w2, h2, angle, ImageUtils.eColor.eCOLOR_WHITE);
+        int ymid = h/2;
+        int xmid = w/2;
+        int diameter1 = w/2;
+        int diameter2 = diameter1/2;
+        int radius1 = diameter1/2;
+        int radius2 = diameter2/2;
+        float angle = 0f;
+        ImageUtils.drawFilledEllipse(mat1, xmid, ymid, radius1, radius2, angle, ImageUtils.eColor.eCOLOR_WHITE);
+        ImageUtils.drawEllipse(mat2, xmid, ymid, radius1, radius2, angle, ImageUtils.eColor.eCOLOR_WHITE);
         
-        // compute ellipse
-        Mask mask = new Mask(mat);
-        Mask mask2 = computeAndDrawEllipse(mask);
+        // create list for masks
+        List<Mask> listMasks = new ArrayList<>();
+        listMasks.add(new Mask(mat1));
+        listMasks.add(new Mask(mat2));
+
+        // process masks (compute ellipses)
+        List<Mask> listMasks2 = processMasks(listMasks);
         
-        // show both
-        Display display = new Display("computed");
-        display.addWindow(ImageUtils.cvMask2Java(mask2.getMat()));            
+        // show masks (original and processed)
+        showMasks(listMasks2, "ellipses");
     }
 
-    private void testMask2()
+    private void testMaskLines()
     {
-        System.out.println(modName  + ".testMask2) ...");
+        System.out.println(modName  + ".testMaskLines() ...");
         // create mask
-        int w = 400;
-        int h = 400;
+        int w = 200;
+        int h = 200;
         Mat mat1 = Mat.zeros(h, w, CvType.CV_8UC1);
         Mat mat2 = mat1.clone();
         Mat mat3 = mat1.clone();
@@ -81,15 +90,15 @@ public class TestTronCV
         // draw lines
         int ymid = h/2;
         int xmid = w/2;
-        float length = (float)w/2;
-        float horizontal = 0.0f;
-        float vertical = 90.0f;
+        float length = (float)w/4;
+        float angle1 = 30.0f;
+        float angle2 = -45.0f;
         // horizontal
-        ImageUtils.drawLine(mat1, 0, ymid, length, horizontal, ImageUtils.eColor.eCOLOR_WHITE);
-        ImageUtils.drawLine(mat2, xmid, ymid, length, horizontal, ImageUtils.eColor.eCOLOR_WHITE);
+        ImageUtils.drawLine(mat1, 0, ymid, length, angle1, ImageUtils.eColor.eCOLOR_WHITE);
+        ImageUtils.drawLine(mat2, xmid, ymid, length, angle1, ImageUtils.eColor.eCOLOR_WHITE);
         // vertical 
-        ImageUtils.drawLine(mat3, xmid, 0, length, vertical, ImageUtils.eColor.eCOLOR_WHITE);
-        ImageUtils.drawLine(mat4, xmid, ymid, length, vertical, ImageUtils.eColor.eCOLOR_WHITE);
+        ImageUtils.drawLine(mat3, xmid, 0, length, angle2, ImageUtils.eColor.eCOLOR_WHITE);
+        ImageUtils.drawLine(mat4, xmid, ymid, length, angle2, ImageUtils.eColor.eCOLOR_WHITE);
 
         // create list for masks
         List<Mask> listMasks = new ArrayList<>();
@@ -102,12 +111,12 @@ public class TestTronCV
         List<Mask> listMasks2 = processMasks(listMasks);
         
         // show masks (original and processed)
-        showMasks(listMasks2, "processed");
+        showMasks(listMasks2, "lines");
     }
 
-    private void testMaskDrawing()
+    private void testMaskRectangles()
     {
-        System.out.println(modName  + ".testMaskDrawing() ...");
+        System.out.println(modName  + ".testMaskRectangles() ...");
 
         // create list for masks
         List<Mask> listMasks = new ArrayList<>();
@@ -133,7 +142,7 @@ public class TestTronCV
         List<Mask> listMasks2 = processMasks(listMasks);
 
         // show masks (original and processed)
-        showMasks(listMasks, "original");
+        showMasks(listMasks, "rectangles");
         showMasks(listMasks2, "processed");
     }
 
